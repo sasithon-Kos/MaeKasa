@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/Merge__1.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[16.74082350786067,98.49147295658763],[16.95556455339391,98.89796986865018]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleMaps_0');
+        map.getPane('pane_GoogleMaps_0').style.zIndex = 400;
+        var layer_GoogleMaps_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleMaps_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_GoogleMaps_0;
+        map.addLayer(layer_GoogleMaps_0);
+        function pop_Merge__1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">area</th>\
+                        <td>' + (feature.properties['area'] !== null ? autolinker.link(feature.properties['area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">rai</th>\
+                        <td>' + (feature.properties['rai'] !== null ? autolinker.link(feature.properties['rai'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id_code'] !== null ? autolinker.link(feature.properties['id_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">area_rai</th>\
+                        <td>' + (feature.properties['area_rai'] !== null ? autolinker.link(feature.properties['area_rai'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ชื่?</th>\
+                        <td>' + (feature.properties['ชื่?'] !== null ? autolinker.link(feature.properties['ชื่?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['layer'] !== null ? autolinker.link(feature.properties['layer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['path'] !== null ? autolinker.link(feature.properties['path'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Merge__1_0(feature) {
+            switch(String(feature.properties['ชื่?'])) {
+                case 'บ้านโกกโก่':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,66,152,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านไทยสามัคคี':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,63,240,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านน้ำดิบ':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(201,47,13,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านโพธิ์ทอง':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(159,203,16,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านแม่กาษา':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(151,114,207,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านแม่กาษานุสรณ์':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(103,201,201,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านแม่กาษาโพธิ์เงิน':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(186,80,221,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านแม่กื้ดสามท่า':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,85,210,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านแม่กื้ดหลวง':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(217,132,35,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านแม่กื้ดใหม่':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(107,187,230,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านแม่กื้ดใหม่ดอนสว่าง':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(95,237,85,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านแม่กื้ดใหม่พัฒนา':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(63,239,116,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านแม่กื้ดใหม่สามท่า':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(19,78,216,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านแม่กื้ดใหม่ไหล่ท่า':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(135,227,69,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านห้วยบง':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(68,227,171,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'บ้านใหม่ริมเมย':
+                    return {
+                pane: 'pane_Merge__1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,193,111,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Merge__1');
+        map.getPane('pane_Merge__1').style.zIndex = 401;
+        map.getPane('pane_Merge__1').style['mix-blend-mode'] = 'normal';
+        var layer_Merge__1 = new L.geoJson(json_Merge__1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Merge__1',
+            layerName: 'layer_Merge__1',
+            pane: 'pane_Merge__1',
+            onEachFeature: pop_Merge__1,
+            style: style_Merge__1_0,
+        });
+        bounds_group.addLayer(layer_Merge__1);
+        map.addLayer(layer_Merge__1);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Merge_ขอบเขตหมู่บ้าน<br /><table><tr><td style="text-align: center;"><img src="legend/Merge__1_บานโกกโก0.png" /></td><td>บ้านโกกโก่</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานไทยสามคค1.png" /></td><td>บ้านไทยสามัคคี</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานนำดบ2.png" /></td><td>บ้านน้ำดิบ</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานโพธทอง3.png" /></td><td>บ้านโพธิ์ทอง</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานแมกาษา4.png" /></td><td>บ้านแม่กาษา</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานแมกาษานสรณ5.png" /></td><td>บ้านแม่กาษานุสรณ์</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานแมกาษาโพธเงน6.png" /></td><td>บ้านแม่กาษาโพธิ์เงิน</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานแมกดสามทา7.png" /></td><td>บ้านแม่กื้ดสามท่า</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานแมกดหลวง8.png" /></td><td>บ้านแม่กื้ดหลวง</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานแมกดใหม9.png" /></td><td>บ้านแม่กื้ดใหม่</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานแมกดใหมดอนสวาง10.png" /></td><td>บ้านแม่กื้ดใหม่ดอนสว่าง</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานแมกดใหมพฒนา11.png" /></td><td>บ้านแม่กื้ดใหม่พัฒนา</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานแมกดใหมสามทา12.png" /></td><td>บ้านแม่กื้ดใหม่สามท่า</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานแมกดใหมไหลทา13.png" /></td><td>บ้านแม่กื้ดใหม่ไหล่ท่า</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานหวยบง14.png" /></td><td>บ้านห้วยบง</td></tr><tr><td style="text-align: center;"><img src="legend/Merge__1_บานใหมรมเมย15.png" /></td><td>บ้านใหม่ริมเมย</td></tr></table>': layer_Merge__1,"Google Maps": layer_GoogleMaps_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_Merge__1,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'ชื่?'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        resetLabels([layer_Merge__1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Merge__1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Merge__1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Merge__1]);
+        });
+        </script>
+    </body>
+</html>
